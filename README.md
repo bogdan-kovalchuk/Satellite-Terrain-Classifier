@@ -38,6 +38,17 @@ data/
 ├── green_area/
 └── water/
 ```
+### Sample Images from the Dataset
+
+Below are example satellite images for each land-use / land-cover class in the dataset.
+
+| Cloudy | Desert |
+|--------|--------|
+| ![Cloudy sample](images/cloudy_example.jpg) | ![Desert sample](images/desert_example.jpg) |
+
+| Green Area | Water |
+|------------|-------|
+| ![Green area sample](images/green_area_example.jpg) | ![Water sample](images/water_example.jpg) |
 
 ### Classes
 
