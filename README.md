@@ -19,28 +19,53 @@ The model can be used by government agencies and private companies to automatica
 
 ## Dataset Description with Fields and Classes
 
-The dataset consists of satellite images organized in a folder-based structure, where each subdirectory represents a single class.
+The project uses the **Satellite Image Classification** dataset from Kaggle.  
+The dataset consists of satellite images organized in a **folder-based structure**, where each subdirectory represents a single land-use / land-cover class. This structure is compatible with `torchvision.datasets.ImageFolder`.
 
-### Data format
-- Image type: RGB images
-- Image size: resized to **64×64** pixels
-- Storage format: directory-based (ImageFolder-compatible)
+### Data Format
+
+- **Image type:** RGB images  
+- **Original image sizes:** Vary across samples  
+- **Model input size:** All images are resized to **64 × 64** pixels  
+- **Storage format:** Directory-based dataset (ImageFolder-compatible)
+
+Directory structure:
+
+```text
+data/
+├── cloudy/
+├── desert/
+├── green_area/
+└── water/
+```
 
 ### Classes
-The dataset contains the following classes:
 
-**TODO:** Add table with classes
+The dataset contains four land-use / land-cover classes:
 
 | Class name | Description |
 |-----------|-------------|
-| class_1 | TODO |
-| class_2 | TODO |
-| class_3 | TODO |
+| **cloudy** | Satellite images dominated by cloud cover. This class represents scenes where clouds obscure the Earth’s surface, which is a common challenge in satellite image analysis and remote sensing. |
+| **desert** | Images of arid and semi-arid regions with sandy terrain and minimal vegetation. These images are important for identifying barren land and monitoring desertification. |
+| **green_area** | Images characterized by dense vegetation such as forests, grasslands, and agricultural fields. This class is essential for environmental monitoring, agriculture, and ecosystem analysis. |
+| **water** | Images containing large water bodies such as rivers, lakes, or seas. This class supports applications related to hydrology, flood monitoring, and water resource management. |
 
-### Target variable
-- **target**: land-use / land-cover category (multi-class classification)
+### Target Variable
 
-**TODO:** Add number of samples per class (class distribution table or chart)
+- **Target name:** `target`  
+- **Type:** Categorical  
+- **Task:** Multi-class image classification  
+- **Description:** The model predicts the land-use / land-cover category of a satellite image, selecting one of the four classes listed above.
+
+### Class Distribution
+
+The dataset contains approximately **5,600 images** in total and is moderately imbalanced:
+
+- **cloudy:** ~1,500 images  
+- **desert:** ~1,100 images  
+- **green_area:** ~1,500 images  
+- **water:** ~1,500 images  
+
 
 ---
 
