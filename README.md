@@ -10,10 +10,10 @@ Satellite image classification is a fundamental task in remote sensing and is wi
 - agriculture analysis
 - disaster assessment
 
-The task is formulated as a **multi-class image classification** problem. A convolutional neural network (CNN) is trained to learn discriminative visual patterns from satellite imagery and predict the correct class label for unseen images.
-
 **Real-world usage example:**  
 The model can be used by government agencies and private companies to automatically analyze satellite imagery for monitoring land use changes, detecting urban expansion, and assessing environmental impact.
+
+The task is formulated as a **multi-class image classification** problem. A convolutional neural network (CNN) is trained to learn discriminative visual patterns from satellite imagery and predict the correct class label for unseen images.
 
 ---
 
