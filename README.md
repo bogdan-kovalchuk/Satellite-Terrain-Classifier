@@ -2,7 +2,7 @@
 
 ## Problem Description
 
-This project addresses the problem of **satellite image classification**, where the goal is to automatically classify satellite images into predefined land-use / land-cover classes based on visual content.
+This project addresses the problem of **satellite image classification**, where the goal is to automatically classify satellite images into predefined classes (**cloudy**, **desert**, **green_area**, **water**) based on visual content.
 
 Satellite image classification is a fundamental task in remote sensing and is widely used in:
 - environmental monitoring
@@ -20,14 +20,7 @@ The model can be used by government agencies and private companies to automatica
 ## Dataset Description with Fields and Classes
 
 The project uses the **Satellite Image Classification** dataset from Kaggle.  
-The dataset consists of satellite images organized in a **folder-based structure**, where each subdirectory represents a single land-use / land-cover class. This structure is compatible with `torchvision.datasets.ImageFolder`.
-
-### Data Format
-
-- **Image type:** RGB images  
-- **Original image sizes:** Vary across samples  
-- **Model input size:** All images are resized to **64 × 64** pixels  
-- **Storage format:** Directory-based dataset (ImageFolder-compatible)
+The dataset consists of satellite images organized in a **folder-based structure**, where each subdirectory represents a class. This structure is compatible with `torchvision.datasets.ImageFolder`.
 
 Directory structure:
 
@@ -40,7 +33,7 @@ data/
 ```
 ### Sample Images from the Dataset
 
-Below are example satellite images for each land-use / land-cover class in the dataset.
+Below are example satellite images for each class in the dataset.
 
 | Cloudy | Desert |
 |--------|--------|
@@ -52,7 +45,7 @@ Below are example satellite images for each land-use / land-cover class in the d
 
 ### Classes
 
-The dataset contains four land-use / land-cover classes:
+The dataset contains four classes:
 
 | Class name | Description |
 |-----------|-------------|
@@ -66,7 +59,7 @@ The dataset contains four land-use / land-cover classes:
 - **Target name:** `target`  
 - **Type:** Categorical  
 - **Task:** Multi-class image classification  
-- **Description:** The model predicts the land-use / land-cover category of a satellite image, selecting one of the four classes listed above.
+- **Description:** The model predicts the category of a satellite image, selecting one of the four classes listed above.
 
 ### Class Distribution
 
@@ -76,7 +69,6 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 - **desert:** ~1,100 images  
 - **green_area:** ~1,500 images  
 - **water:** ~1,500 images  
-
 
 ---
 
