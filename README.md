@@ -19,8 +19,8 @@ The task is formulated as a **multi-class image classification** problem. A conv
 
 ## Dataset Description with Fields and Classes
 
-The project uses the **Satellite Image Classification** dataset from Kaggle.  
-The dataset consists of satellite images organized in a **folder-based structure**, where each subdirectory represents a class. This structure is compatible with `torchvision.datasets.ImageFolder`.
+The project uses the **[Satellite Image Classification](https://www.kaggle.com/datasets/mahmoudreda55/satellite-image-classification)** dataset from Kaggle (published by Mahmoud Reda).  
+The dataset consists of satellite images organized in a **folder-based structure**, where each subdirectory represents a single class. This structure is fully compatible with `torchvision.datasets.ImageFolder`.
 
 Directory structure:
 
