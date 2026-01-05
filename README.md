@@ -101,21 +101,48 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 
 ## Exploratory Data Analysis (EDA)
 
-EDA is performed in `notebooks/notebook.ipynb` and includes:
+Exploratory Data Analysis was performed in `notebooks/classification.ipynb` to understand the structure and characteristics of the satellite image dataset before model training.
 
-- Dataset size and class distribution
-- Visualization of sample images per class
-- Image resolution and channel analysis
-- Basic data augmentation inspection
+The following steps were carried out:
 
-For image-specific analysis:
-- Visual inspection of representative images
-- Checking class imbalance
+### Dataset Size and Class Distribution
 
-**TODO:**
-- Add EDA plots (class distribution)
-- Add example images per class
-- Add explanation of observed patterns
+- The dataset was loaded in its original form (without transformations) using `torchvision.datasets.ImageFolder`.
+- The total number of images and the list of available classes were inspected.
+- The number of images per class was calculated to analyze class balance.
+- A bar chart was created to visualize the class distribution.
+- An imbalance ratio (max class size / min class size) was computed.
+
+**Observation:**  
+The dataset is **moderately imbalanced**, with the `desert` class containing fewer samples compared to the other classes. This imbalance was considered during model training.
+
+---
+
+### Visualization of Sample Images per Class
+
+- One representative image was randomly selected and visualized for each class.
+- Images were displayed in a 2×2 grid to allow visual comparison between classes.
+
+**Observation:**  
+- `cloudy` images often have reduced surface detail due to cloud coverage.  
+- `water` images are characterized by smooth textures and dominant blue tones.  
+- `green_area` images show vegetation patterns and high texture variability.  
+- `desert` images typically contain sandy or brown tones with granular textures.
+
+These visual differences indicate that the classes are visually distinguishable, making the dataset suitable for image classification.
+
+---
+
+### Image Resolution and Channel Analysis
+
+- A subset of images was sampled to analyze original image resolutions.
+- Width and height distributions were inspected using a scatter plot.
+- Mean and standard deviation values were computed for each RGB channel.
+
+**Observation:**  
+- Original image resolutions vary across the dataset.
+- All images are RGB (3-channel).
+- Due to varying resolutions, resizing images to a fixed size (64×64) is necessary for consistent model input.
 
 ---
 
