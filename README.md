@@ -354,17 +354,15 @@ curl -X POST http://localhost:9696/predict-base64 \
 
 The service is deployed on **AWS EC2** and runs inside a **Docker**
 
-The API (FastAPI) is publicly available at:
+The API (FastAPI) is publicly available at **Web interface (Swagger UI): ** http://13.61.179.126:9696/docs
 
-**Web interface (Swagger UI):** http://13.61.179.126:9696/docs
+### Deployment steps that were performed
 
-### Deployment steps
-
-1.  Launch an AWS EC2 instance
-2.  Install Docker (and Git)
-3.  Clone the repository
-4.  Build the Docker image
-5.  Run the container and expose the service port with command:
+1. An AWS EC2 instance was launched  
+2. Docker (and Git) were installed on Amazon Linux  
+3. The repository was cloned from GitHub  
+4. The Docker image was built using the provided Dockerfile  
+5. The container was started and the service port was exposed with the command:
 
 ```bash
 docker run -d --name satclf\
@@ -372,6 +370,7 @@ docker run -d --name satclf\
 -p 9696:8000\
 predict:latest
 ```
+
 ---
 
 ## How to test the service (Swagger UI)
@@ -395,10 +394,9 @@ predict:latest
 }
 ```
 
-> **Note:** If the Swagger UI link is not accessible, it means that the AWS Free Tier period has expired and the EC2 instance running the Docker service is no longer available.
-
-
 ---
+
+> **Note:** If the Swagger UI link is not accessible, it means that the AWS Free Tier period has expired and the EC2 instance running the Docker service is no longer available.
 
 ## Conclusion
 
