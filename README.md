@@ -350,27 +350,53 @@ curl -X POST http://localhost:9696/predict-base64 \
 
 ---
 
-## Cloud Deployment (AWS Deployment)
+## Cloud Deployment (AWS EC2 + Docker)
 
-The service is deployed on **AWS EC2** using Docker.
+The service is deployed on **AWS EC2** and runs inside a **Docker**
 
-Deployment steps:
-1. Launch EC2 instance
-2. Install Docker
-3. Clone repository
-4. Build Docker image
-5. Run container
+The API (FastAPI) is publicly available at:
 
-The service is accessible at:
+**Web interface (Swagger UI):** http://13.61.179.126:9696/docs
 
-```text
-http://<EC2_PUBLIC_IP>:8000
+### Deployment steps
+
+1.  Launch an AWS EC2 instance
+2.  Install Docker (and Git)
+3.  Clone the repository
+4.  Build the Docker image
+5.  Run the container and expose the service port with command:
+
+```bash
+docker run -d --name satclf\
+--restart unless-stopped\
+-p 9696:8000\
+predict:latest
+```
+---
+
+## How to test the service (Swagger UI)
+
+1.  Open the Swagger UI: http://13.61.179.126:9696/docs\
+2.  Find the endpoint POST /predict-file and open it
+3.  Click **Try it out**
+4.  Click **Choose File** and select any .jpg image from folder [data](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/tree/main/data)
+5.  Click **Execute**
+6.  Scroll down to **Response body** where you should see output similar to:
+   
+```bash
+{
+  "predicted_class": "desert",
+  "probabilities": {
+    "cloudy": 0.11612863838672638,
+    "desert": 0.8830476403236389,
+    "green_area": 0.00010835039574885741,
+    "water": 0.0007154387421905994
+  }
+}
 ```
 
-**TODO:**
-- Add EC2 instance type
-- Add security group configuration
-- Add screenshots or video of deployed service
+> **Note:** If the Swagger UI link is not accessible, it means that the AWS Free Tier period has expired and the EC2 instance running the Docker service is no longer available.
+
 
 ---
 
