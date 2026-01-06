@@ -78,23 +78,22 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 .
 ├── README.md
 ├── data/
-│   ├── raw/              # Original dataset
-│   └── processed/        # Preprocessed data (if applicable)
+│   ├── cloudy/
+│   ├── desert/
+│   ├── green_area/    
+│   └── water/
+├── images/
 ├── notebooks/
-│   └── notebook.ipynb    # EDA and experiments
+│   └── classification.ipynb 
 ├── src/
-│   ├── train.py          # Model training script
-│   ├── predict.py        # Inference logic
-│   └── utils.py          # Helper functions
+│   └── predict.py
 ├── app/
-│   └── main.py           # FastAPI service
+│   └── main.py
 ├── model/
-│   └── model.pth         # Saved trained model
-├── requirements.txt
+│   └── model.pth
 ├── Dockerfile
-├── aws/
-│   └── deploy_ec2.md     # AWS deployment notes
-└── screenshots/
+├── pyproject.toml
+└── uv.lock
 ```
 
 ---
@@ -302,6 +301,14 @@ Example output:
 
 All components of the project are containerized using Docker. The container runs the FastAPI application with the trained PyTorch model.
 
+### Dockerfile
+
+The [`Dockerfile`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/Dockerfile) used in this project is available in the repository root.
+
+The file contains instructions for installing all required packages, copying `app/main.py` and `src/predict.py`, and running the FastAPI service.
+
+---
+
 ### Building Docker Image
 
 From the repository root execute:
@@ -316,15 +323,9 @@ docker build -t predict:latest .
 docker run -it --rm -p 9696:9696 predict:latest
 ```
 
-The option `-p 9696:9696` maps the internal container port to the same port on the host machine, enabling access to the API.
+The option `-p 9696:8000` maps the internal container port to the port on the host machine, enabling access to the API.
 
-### Service Execution Inside Docker
-
-The container launches the application using uvicorn as described earlier. After the container starts, the API becomes available at:
-
-```
-http://localhost:9696
-```
+The container launches the application using uvicorn as described earlier. 
 
 ---
 
@@ -346,14 +347,6 @@ curl -X POST http://localhost:9696/predict-base64 \
      -d '{"image": "<base64-encoded-image>"}' \
      -w "\n"
 ```
-
----
-
-### Dockerfile
-
-The Dockerfile [`Dockerfile`](ttps://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/Dockerfile) used in this project is available in the repository root.
-
-The file contains instructions for installing all required packages, copying `app/main.py` and `src/predict.py`, and running the FastAPI service.
 
 ---
 
