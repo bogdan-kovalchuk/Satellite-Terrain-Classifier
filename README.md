@@ -354,7 +354,7 @@ curl -X POST http://localhost:9696/predict-base64 \
 
 The service is deployed on **AWS EC2** and runs inside a **Docker**
 
-The API (FastAPI) is publicly available at **Web interface (Swagger UI): ** http://13.61.179.126:9696/docs
+The API (FastAPI) is publicly available at web interface (Swagger UI):  http://13.61.179.126:9696/docs
 
 ### Deployment steps that were performed
 
