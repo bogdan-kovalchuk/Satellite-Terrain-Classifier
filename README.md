@@ -249,7 +249,7 @@ This command automatically creates a virtual environment and installs all packag
 
 ---
 
-## Model Deployment (FastAPI)
+## Model Deployment ([FastAPI](https://fastapi.tiangolo.com/))
 
 The trained model is deployed as a REST API using **FastAPI**. The service supports two prediction modes: direct image file upload and JSON base64 input.
 
@@ -320,7 +320,7 @@ docker build -t predict:latest .
 ### Running Docker Container
 
 ```bash
-docker run -it --rm -p 9696:9696 predict:latest
+docker run -it --rm -p 9696:8000 predict:latest
 ```
 
 The option `-p 9696:8000` maps the internal container port to the port on the host machine, enabling access to the API.
