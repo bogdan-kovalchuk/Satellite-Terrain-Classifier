@@ -101,7 +101,7 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 
 ## Exploratory Data Analysis (EDA)
 
-Exploratory Data Analysis was performed in [`notebooks/classification.ipynb`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/notebooks/classification.ipynb) to understand the structure and characteristics of the satellite image dataset before model training.
+Exploratory Data Analysis was performed in `notebooks/classification.ipynb` to understand the structure and characteristics of the satellite image dataset before model training.
 
 The following steps were carried out:
 
@@ -221,79 +221,47 @@ These design choices ensure that the results reported in this project can be rel
 
 ---
 
-## Dependency and Environment Management
-
-All dependencies for this project are managed using **uv**. The [`pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml) file defines the complete list of required Python packages and their versions.
-
-### Main Libraries
-
-The application relies on the following core technologies:
-
-- **torch** – neural network framework for training and inference  
-- **torchvision** – image processing utilities and datasets  
-- **fastapi** – REST API framework  
-- **uvicorn** – ASGI server for running FastAPI applications  
-- **numpy** – numerical operations  
-- **python-multipart** – file upload support in FastAPI
-
----
-
-### Environment Setup
-
-To create a fully configured and reproducible environment, execute from the root directory:
-
-```bash
-uv sync
-```
-
-This command automatically creates a virtual environment and installs all packages specified in [`pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml).
-
----
-
 ## Model Deployment (FastAPI)
 
-The trained model is deployed as a REST API using **FastAPI**. The service supports two prediction modes: direct image file upload and JSON base64 input.
+The trained model is deployed as a REST API using **FastAPI**.
 
-### Running the Service Locally
-
-The API is executed through the uv environment:
+To run the service locally:
 
 ```bash
-uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
----
-
-### Image Classification via File Upload
+### Example request
 
 ```bash
-curl -X POST http://localhost:8000/predict-file \
-     -F "file=@images/test_cloudy.jpg" \
-     -w "\n"
-```
-
----
-
-### Image Classification via Base64
-
-```bash
-curl -X POST http://localhost:8000/predict-base64 \
+curl -X POST http://localhost:8000/predict \
      -H "Content-Type: application/json" \
-     -d '{"image": "<base64-encoded-image>"}' \
-     -w "\n"
+     -d '{"image": "<base64-encoded-image>"}'
 ```
 
-Example output:
+**TODO:**
+- Add request/response JSON schema
+- Add screenshot of API testing
+
+---
+
+## Dependency and Environment Management
+
+Dependencies are managed via `requirements.txt`.
+
+Main libraries:
+- torch
+- torchvision
+- fastapi
+- uvicorn
+- numpy
+
+Environment setup:
+
 ```bash
-{
-  "predicted_class": "water",
-  "probabilities": {
-    "cloudy": 0.0124,
-    "desert": 0.0011,
-    "green_area": 0.0347,
-    "water": 0.9518
-  }
-}
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ---

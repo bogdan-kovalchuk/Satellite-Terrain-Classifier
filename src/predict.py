@@ -1,6 +1,3 @@
-# src/predict.py
-# Image inference utilities for Satellite Image Classification (ResNet9)
-
 from __future__ import annotations
 
 import base64
@@ -16,7 +13,7 @@ from torchvision import transforms
 
 
 # ---------------------------
-# Model definition (must match training)
+# Model definition
 # ---------------------------
 
 def conv_block(in_ch: int, out_ch: int, pool: bool = False) -> nn.Sequential:
@@ -71,7 +68,6 @@ class ModelBundle:
 
 
 def _strip_data_uri_prefix(s: str) -> str:
-    # Supports strings like: "data:image/png;base64,AAAA..."
     if "," in s and s.strip().lower().startswith("data:"):
         return s.split(",", 1)[1]
     return s
@@ -83,7 +79,6 @@ def decode_base64_image(image_b64: str) -> Image.Image:
     try:
         raw = base64.b64decode(image_b64, validate=True)
     except Exception:
-        # Some encoders include newlines/spaces; be lenient
         raw = base64.b64decode(image_b64)
     return Image.open(io.BytesIO(raw)).convert("RGB")
 
@@ -118,7 +113,7 @@ def load_model_bundle(model_path: str = "model/model.pth") -> ModelBundle:
 def predict_image(bundle: ModelBundle, image: Image.Image) -> Tuple[str, Dict[str, float]]:
     """Return predicted class and probability distribution."""
     tfm = build_infer_transform(bundle.image_size)
-    x = tfm(image).unsqueeze(0).to(bundle.device)  # [1,3,H,W]
+    x = tfm(image).unsqueeze(0).to(bundle.device)
 
     logits = bundle.model(x)
     probs = F.softmax(logits, dim=1).squeeze(0).detach().cpu().numpy()
