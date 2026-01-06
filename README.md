@@ -101,7 +101,7 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 
 ## Exploratory Data Analysis (EDA)
 
-Exploratory Data Analysis was performed in `notebooks/classification.ipynb` to understand the structure and characteristics of the satellite image dataset before model training.
+Exploratory Data Analysis was performed in [`notebooks/classification.ipynb`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/notebooks/classification.ipynb) to understand the structure and characteristics of the satellite image dataset before model training.
 
 The following steps were carried out:
 
@@ -223,46 +223,80 @@ These design choices ensure that the results reported in this project can be rel
 
 ## Model Deployment (FastAPI)
 
-The trained model is deployed as a REST API using **FastAPI**.
+The trained model is deployed as a REST API using **FastAPI**.  
+The service supports two prediction modes: direct image file upload and JSON base64 input.
 
-To run the service locally:
+### Running the Service Locally
+
+The API is executed through the uv environment:
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-### Example request
+---
+
+### Image Classification via File Upload
 
 ```bash
-curl -X POST http://localhost:8000/predict \
+curl -X POST http://localhost:8000/predict-file \
+     -F "file=@images/test_cloudy.jpg" \
+     -w "\n"
+```
+
+---
+
+### Image Classification via Base64
+
+```bash
+curl -X POST http://localhost:8000/predict-base64 \
      -H "Content-Type: application/json" \
-     -d '{"image": "<base64-encoded-image>"}'
+     -d '{"image": "<base64-encoded-image>"}' \
+     -w "\n"
 ```
 
-**TODO:**
-- Add request/response JSON schema
-- Add screenshot of API testing
+```bash
+Example output:
+
+{
+  "predicted_class": "water",
+  "probabilities": {
+    "cloudy": 0.0124,
+    "desert": 0.0011,
+    "green_area": 0.0347,
+    "water": 0.9518
+  }
+}
+```
 
 ---
 
 ## Dependency and Environment Management
 
-Dependencies are managed via `requirements.txt`.
+All dependencies for this project are managed using **uv**. The [`pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml) file defines the complete list of required Python packages and their versions.
 
-Main libraries:
-- torch
-- torchvision
-- fastapi
-- uvicorn
-- numpy
+### Main Libraries
 
-Environment setup:
+The application relies on the following core technologies:
+
+- **torch** – neural network framework for training and inference  
+- **torchvision** – image processing utilities and datasets  
+- **fastapi** – REST API framework  
+- **uvicorn** – ASGI server for running FastAPI applications  
+- **numpy** – numerical operations  
+- **python-multipart** – file upload support in FastAPI
+
+---
+
+### Environment Setup
+
+To create a fully configured and reproducible environment, execute from the root directory:
 
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+uv sync
 ```
+
+This command automatically creates a virtual environment and installs all packages specified in `pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml).
 
 ---
 
