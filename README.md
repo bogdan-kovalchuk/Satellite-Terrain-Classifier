@@ -101,7 +101,7 @@ The dataset contains approximately **5,600 images** in total and is moderately i
 
 ## Exploratory Data Analysis (EDA)
 
-Exploratory Data Analysis was performed in `notebooks/classification.ipynb` to understand the structure and characteristics of the satellite image dataset before model training.
+Exploratory Data Analysis was performed in [`notebooks/classification.ipynb`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/notebooks/classification.ipynb) to understand the structure and characteristics of the satellite image dataset before model training.
 
 The following steps were carried out:
 
@@ -221,69 +221,139 @@ These design choices ensure that the results reported in this project can be rel
 
 ---
 
-## Model Deployment (FastAPI)
+## Dependency and Environment Management
 
-The trained model is deployed as a REST API using **FastAPI**.
+All dependencies for this project are managed using **uv**. The [`pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml) file defines the complete list of required Python packages and their versions.
 
-To run the service locally:
+### Main Libraries
 
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
+The application relies on the following core technologies:
 
-### Example request
-
-```bash
-curl -X POST http://localhost:8000/predict \
-     -H "Content-Type: application/json" \
-     -d '{"image": "<base64-encoded-image>"}'
-```
-
-**TODO:**
-- Add request/response JSON schema
-- Add screenshot of API testing
+- **torch** – neural network framework for training and inference  
+- **torchvision** – image processing utilities and datasets  
+- **fastapi** – REST API framework  
+- **uvicorn** – ASGI server for running FastAPI applications  
+- **numpy** – numerical operations  
+- **python-multipart** – file upload support in FastAPI
 
 ---
 
-## Dependency and Environment Management
+### Environment Setup
 
-Dependencies are managed via `requirements.txt`.
-
-Main libraries:
-- torch
-- torchvision
-- fastapi
-- uvicorn
-- numpy
-
-Environment setup:
+To create a fully configured and reproducible environment, execute from the root directory:
 
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+uv sync
+```
+
+This command automatically creates a virtual environment and installs all packages specified in [`pyproject.toml`](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/pyproject.toml).
+
+---
+
+## Model Deployment (FastAPI)
+
+The trained model is deployed as a REST API using **FastAPI**. The service supports two prediction modes: direct image file upload and JSON base64 input.
+
+### Running the Service Locally
+
+The API is executed through the uv environment:
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+---
+
+### Image Classification via File Upload
+
+```bash
+curl -X POST http://localhost:8000/predict-file \
+     -F "file=@images/test_cloudy.jpg" \
+     -w "\n"
+```
+
+---
+
+### Image Classification via Base64
+
+```bash
+curl -X POST http://localhost:8000/predict-base64 \
+     -H "Content-Type: application/json" \
+     -d '{"image": "<base64-encoded-image>"}' \
+     -w "\n"
+```
+
+Example output:
+```bash
+{
+  "predicted_class": "water",
+  "probabilities": {
+    "cloudy": 0.0124,
+    "desert": 0.0011,
+    "green_area": 0.0347,
+    "water": 0.9518
+  }
+}
 ```
 
 ---
 
 ## Containerization
 
-The application is fully containerized using Docker.
+All components of the project are containerized using Docker. The container runs the FastAPI application with the trained PyTorch model.
 
-### Build Docker image
+### Building Docker Image
 
-```bash
-docker build -t satellite-classification .
-```
-
-### Run container
+From the repository root execute:
 
 ```bash
-docker run -p 8000:8000 satellite-classification
+docker build -t predict:latest .
 ```
 
-**TODO:**
-- Add explanation of exposed ports
+### Running Docker Container
+
+```bash
+docker run -it --rm -p 9696:9696 predict:latest
+```
+
+The option `-p 9696:9696` maps the internal container port to the same port on the host machine, enabling access to the API.
+
+### Service Execution Inside Docker
+
+The container launches the application using uvicorn as described earlier. After the container starts, the API becomes available at:
+
+```
+http://localhost:9696
+```
+
+---
+
+### API Testing
+
+To classify an image file using the API:
+
+```bash
+curl -X POST http://localhost:9696/predict-file \
+     -F "file=@images/test_cloudy.jpg" \
+     -w "\n"
+```
+
+To classify an image via base64 JSON input:
+
+```bash
+curl -X POST http://localhost:9696/predict-base64 \
+     -H "Content-Type: application/json" \
+     -d '{"image": "<base64-encoded-image>"}' \
+     -w "\n"
+```
+
+---
+
+### Dockerfile
+
+The Dockerfile [`Dockerfile`](ttps://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/blob/main/Dockerfile) used in this project is available in the repository root.
+
+The file contains instructions for installing all required packages, copying `app/main.py` and `src/predict.py`, and running the FastAPI service.
 
 ---
 
