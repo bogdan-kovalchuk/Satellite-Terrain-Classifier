@@ -375,7 +375,7 @@ predict:latest
 
 ## How to test the service (Swagger UI)
 
-1.  Open the Swagger UI: http://13.61.179.126:9696/docs\
+1.  Open the Swagger UI: http://13.61.179.126:9696/docs
 2.  Find the endpoint POST /predict-file and open it
 3.  Click **Try it out**
 4.  Click **Choose File** and select any .jpg image from folder [data](https://github.com/bogdan-kovalchuk/Satellite-Terrain-Classifier/tree/main/data)
